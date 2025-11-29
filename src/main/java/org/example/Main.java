@@ -1,6 +1,6 @@
 package org.example;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -43,10 +43,11 @@ public class Main {
     }
 
     private static void handlePrimeChecker(Scanner scanner) {
+        PrimeNumberChecker checker = new PrimeNumberChecker();
         System.out.print("Enter a number to check if it's prime: ");
         try {
             int number = Integer.parseInt(scanner.nextLine().trim());
-            boolean isPrime = SieveOfEratosthenes.IsPrimes(number);
+            boolean isPrime = checker.isPrime(number);
 
             if (isPrime) {
                 System.out.println("✓ " + number + " is a PRIME number!");
@@ -59,6 +60,7 @@ public class Main {
     }
 
     private static void handlePrimeFactorization(Scanner scanner) {
+        PrimeNumberChecker checker = new PrimeNumberChecker();
         System.out.print("Enter a number to factorize: ");
         try {
             int number = Integer.parseInt(scanner.nextLine().trim());
@@ -68,8 +70,8 @@ public class Main {
                 return;
             }
 
-            Map<Integer, Integer> factors = PrimeFactorization.getPrimeFactorization(number);
-            String formatted = PrimeFactorization.formatFactors(factors);
+            List<Integer> factors = checker.getAllPrimes(number);
+            String formatted = factors.toString();
 
             System.out.println("Prime factorization of " + number + ": " + formatted);
         } catch (NumberFormatException e) {
