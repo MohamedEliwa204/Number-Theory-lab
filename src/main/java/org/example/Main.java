@@ -84,21 +84,29 @@ public class Main {
             System.out.print("Enter the second number: ");
             int b = Integer.parseInt(scanner.nextLine().trim());
 
-            if (a <= 0 || b <= 0) {
-                System.out.println("Error: Please enter positive integers.");
+            // Handle special case: both numbers are 0
+            if (a == 0 && b == 0) {
+                System.out.println("Error: GCD(0, 0) is undefined.");
                 return;
             }
 
-            int gcdEuclidean = GCDandLCM.EuclideanGCD(a, b);
-            int lcmEuclidean = GCDandLCM.LCMRelatedGCD(a, b);
+            // Convert to absolute values for calculation
+            int absA = Math.abs(a);
+            int absB = Math.abs(b);
+
+            int gcdEuclidean = GCDandLCM.EuclideanGCD(absA, absB);
+            int lcmEuclidean = GCDandLCM.LCMRelatedGCD(absA, absB);
 
             System.out.println("\n--- Results ---");
+            if (a != absA || b != absB) {
+                System.out.println("Note: Using absolute values |" + a + "| = " + absA + ", |" + b + "| = " + absB);
+            }
             System.out.println("Using Euclidean Algorithm:");
             System.out.println("  GCD(" + a + ", " + b + ") = " + gcdEuclidean);
             System.out.println("  LCM(" + a + ", " + b + ") = " + lcmEuclidean);
 
             System.out.println("\n\nUsing Prime Factorization:");
-            GCDandLCM.displayGCDandLCMWithSteps(a, b);
+            GCDandLCM.displayGCDandLCMWithSteps(absA, absB);
 
         } catch (NumberFormatException e) {
             System.out.println("Error: Please enter valid integers.");

@@ -13,6 +13,10 @@ public class GCDandLCM {
     }
 
     public static int LCMRelatedGCD(int a, int b) {
+        // LCM is 0 if either number is 0
+        if (a == 0 || b == 0) {
+            return 0;
+        }
         int gcd = GCDandLCM.EuclideanGCD(a, b);
         int lcm = (a / gcd) * b;
         return lcm;
@@ -21,14 +25,17 @@ public class GCDandLCM {
 
 
     public static void displayGCDandLCMWithSteps(int a, int b) {
-        // Get prime factorizations
+        if (a == 0 || b == 0) {
+            System.out.println("\nNote: Prime factorization method doesn't apply when one number is 0");
+            System.out.println("GCD(" + a + ", " + b + ") = " + Math.max(a, b));
+            System.out.println("LCM(" + a + ", " + b + ") = 0");
+            return;
+        }
+
         Map<Integer, Integer> factorsA = PrimeFactorization.getPrimeFactorization(a);
         Map<Integer, Integer> factorsB = PrimeFactorization.getPrimeFactorization(b);
-
-        // Display prime factorizations
         String formattedA = PrimeFactorization.formatFactors(factorsA);
         String formattedB = PrimeFactorization.formatFactors(factorsB);
-
         System.out.println("\nStep 1: Find prime factorization of each number");
         System.out.println("  " + a + " = " + formattedA);
         System.out.println("  " + b + " = " + formattedB);
