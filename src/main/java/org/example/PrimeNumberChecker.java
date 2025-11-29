@@ -20,22 +20,24 @@ public class PrimeNumberChecker {
         return arr.get(n);
     }
 
-    public List<Integer> getAllPrimes(Integer n) {
+    public List<Integer> getAllFactors(Integer n) {
         List<Integer> result = new ArrayList<>();
         n = Math.abs(n);
-        setArr(n);
 
-        for(int p = 2; p < Math.sqrt(n); p++) {
-            if(arr.get(p)) {
-                for(int i = p*p; i <= n; i+=p) {
-                    arr.set(i, false);
-                }
+        while((n % 2) == 0) {
+            result.add(2);
+            n /= 2;
+        }
+
+        for(int i = 3; i*i < n; i += 2) {
+            while((n % i) == 0) {
+                result.add(i);
+                n /= i;
             }
         }
 
-        for(int i = 0; i <= n; i++) {
-            if (arr.get(i)) result.add(i);
-        }
+        if(n > 2) result.add(n);
+
         return result;
     }
 
@@ -49,6 +51,6 @@ public class PrimeNumberChecker {
     public static void main(String[] args) {
         PrimeNumberChecker primeChecker = new PrimeNumberChecker();
 
-        System.out.println(primeChecker.getAllPrimes(100));
+        System.out.println(primeChecker.getAllFactors(100));
     }
 }

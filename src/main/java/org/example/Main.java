@@ -70,7 +70,7 @@ public class Main {
                 return;
             }
 
-            List<Integer> factors = checker.getAllPrimes(number);
+            List<Integer> factors = checker.getAllFactors(number);
             String formatted = factors.toString();
 
             System.out.println("Prime factorization of " + number + ": " + formatted);
