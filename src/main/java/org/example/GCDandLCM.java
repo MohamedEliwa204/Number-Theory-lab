@@ -18,38 +18,86 @@ public class GCDandLCM {
         return lcm;
     }
 
-    public static int GCDFactorization(int a, int b) {
-        Map<Integer, Integer> Afactors = PrimeFactorization.getPrimeFactorization(a);
-        Map<Integer, Integer> Bfactors = PrimeFactorization.getPrimeFactorization(b);
-        int gcd = 1;
-        for (Integer prime : Afactors.keySet()) {
-            if (Bfactors.containsKey(prime)) {
-                int powerA = Afactors.get(prime);
-                int powerB = Bfactors.get(prime);
 
-                int minPower = Math.min(powerA, powerB);
-                gcd *= (int) Math.pow(prime, minPower);
-            }
-        }
-        return gcd;
-    }
 
-    public static int LCMFactorization(int a, int b) {
-        Map<Integer, Integer> Afactors = PrimeFactorization.getPrimeFactorization(a);
-        Map<Integer, Integer> Bfactors = PrimeFactorization.getPrimeFactorization(b);
+    public static void displayGCDandLCMWithSteps(int a, int b) {
+        // Get prime factorizations
+        Map<Integer, Integer> factorsA = PrimeFactorization.getPrimeFactorization(a);
+        Map<Integer, Integer> factorsB = PrimeFactorization.getPrimeFactorization(b);
+
+        // Display prime factorizations
+        String formattedA = PrimeFactorization.formatFactors(factorsA);
+        String formattedB = PrimeFactorization.formatFactors(factorsB);
+
+        System.out.println("\nStep 1: Find prime factorization of each number");
+        System.out.println("  " + a + " = " + formattedA);
+        System.out.println("  " + b + " = " + formattedB);
 
         Set<Integer> allPrimes = new HashSet<>();
-        allPrimes.addAll(Afactors.keySet());
-        allPrimes.addAll(Bfactors.keySet());
+        allPrimes.addAll(factorsA.keySet());
+        allPrimes.addAll(factorsB.keySet());
 
-        int lcm = 1;
+        System.out.println("\nStep 2: Calculate GCD (take minimum power of each common prime)");
+        StringBuilder gcdSteps = new StringBuilder();
+        int gcd = 1;
+        boolean hasCommonPrime = false;
+
         for (Integer prime : allPrimes) {
-            int powerA = Afactors.getOrDefault(prime, 0);
-            int powerB = Bfactors.getOrDefault(prime, 0);
+            int powerA = factorsA.getOrDefault(prime, 0);
+            int powerB = factorsB.getOrDefault(prime, 0);
 
-            int maxPower = Math.max(powerA, powerB);
-            lcm *= (int) Math.pow(prime, maxPower);
+            if (powerA > 0 && powerB > 0) {
+                int minPower = Math.min(powerA, powerB);
+                System.out.println("  Prime " + prime + ": min(" + powerA + ", " + powerB + ") = " + minPower);
+
+                if (hasCommonPrime) {
+                    gcdSteps.append(" × ");
+                }
+                if (minPower == 1) {
+                    gcdSteps.append(prime);
+                } else {
+                    gcdSteps.append(prime).append("^").append(minPower);
+                }
+                gcd *= (int) Math.pow(prime, minPower);
+                hasCommonPrime = true;
+            }
         }
-        return lcm;
+
+        if (hasCommonPrime) {
+            System.out.println("  GCD = " + gcdSteps + " = " + gcd);
+        } else {
+            System.out.println("  No common primes, GCD = 1");
+            gcd = 1;
+        }
+
+        System.out.println("\nStep 3: Calculate LCM (take maximum power of each prime)");
+        StringBuilder lcmSteps = new StringBuilder();
+        int lcm = 1;
+        boolean first = true;
+
+        for (Integer prime : allPrimes) {
+            int powerA = factorsA.getOrDefault(prime, 0);
+            int powerB = factorsB.getOrDefault(prime, 0);
+            int maxPower = Math.max(powerA, powerB);
+
+            System.out.println("  Prime " + prime + ": max(" + powerA + ", " + powerB + ") = " + maxPower);
+
+            if (!first) {
+                lcmSteps.append(" × ");
+            }
+            if (maxPower == 1) {
+                lcmSteps.append(prime);
+            } else {
+                lcmSteps.append(prime).append("^").append(maxPower);
+            }
+            lcm *= (int) Math.pow(prime, maxPower);
+            first = false;
+        }
+
+        System.out.println("  LCM = " + lcmSteps + " = " + lcm);
+
+        System.out.println("\n--- Final Results ---");
+        System.out.println("GCD(" + a + ", " + b + ") = " + gcd);
+        System.out.println("LCM(" + a + ", " + b + ") = " + lcm);
     }
 }
